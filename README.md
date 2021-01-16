@@ -12,3 +12,12 @@ TELEGRAM_BOT_TOKEN = YOUR-BOT-TOKEN
 TELEGRAM_BOT_NAME = YOUR-BOT-NAME
 ```
 
+Next step is to create and set Webhook. You can use this tutorial [Set webhook] https://www.xibel-it.eu/setup-telegram-bot-sdk-with-webhook-in-laravel/
+
+When Webhook is created open **App\Http\Middleware\VerifyCsrfToken.php** file in your project and add webhook like so
+```
+ protected $except = [
+        '/97MAaMrev3Z6yQCwJOZopn3T6AeiXHWftJaZzJeJFKJjHfAN3rJhB3V/webhook/',
+    ];
+```
+
