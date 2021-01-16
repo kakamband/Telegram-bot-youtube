@@ -1,5 +1,5 @@
 
 <?php
 
-Route::post('/ YOUR-WEBHOOK-URL-KEY /webhook', 'WebhookController@start');
+Route::post('/YOUR-WEBHOOK-HERE/webhook', 'WebhookController@start');
 
