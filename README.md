@@ -10,6 +10,8 @@ After telegram-sdk is installed you need to create and add your **bot name** and
 ```
 TELEGRAM_BOT_TOKEN = YOUR-BOT-TOKEN
 TELEGRAM_BOT_NAME = YOUR-BOT-NAME
+YOUTUBE_API_KEY=YOUR-API-KEY
+YOUR_MESSAGE_ID=YOUR_MESSAGE_ID
 ```
 
 Next step is to create and set Webhook. You can use this tutorial [Set_webhook](https://www.xibel-it.eu/setup-telegram-bot-sdk-with-webhook-in-laravel/)
