@@ -39,12 +39,7 @@ return [
             'webhook_url'         => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
             'commands'            => [
                 App\Telegram\Commands\StartCommand::class,
-                App\Telegram\Commands\TestCommand::class,
-                App\Telegram\Commands\PhonesCommand::class,
-                App\Telegram\Commands\XiaomiCommand::class,
-                App\Telegram\Commands\StattiCommand::class,
-                App\Telegram\Commands\RedmiCommand::class,
-                App\Telegram\Commands\NewsCommand::class            
+                // Here you can add more your commands
             ],
         ],
 
