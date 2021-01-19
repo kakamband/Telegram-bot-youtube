@@ -11,7 +11,7 @@ use Telegram\Bot\Keyboard\Keyboard;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
-include 'Classes.php';
+require_once 'Classes.php';
 class CallbackMess
 {  
 
@@ -26,8 +26,8 @@ class CallbackMess
     public function callMess(){
 
         $updates = $this->mess['callback_query'];
-        $inboxess = DB::table('inboxess');
-        $youtube = DB::table('youtube');
+        $inboxess = 'inboxess';
+        $youtube = 'youtube';
         if(isset($updates['message']['text']))
         {
             $text = $updates['message']['text'];
@@ -37,12 +37,12 @@ class CallbackMess
         $updfromid = $updates['from']['id'];
         $upd_data = $updates['data'];
         $butto = ['1' => 'youtube 0','2' => 'youtube 5','3' => 'youtube 10','4' => 'youtube 15','5' => 'youtube 20','6' => 'youtube 25'];
-        $inbox = $inboxess->where('upd_from_id', $updfromid)->first(); 
+        $inbox = DB::table($inboxess)->where('upd_from_id', $updfromid)->first(); 
         $search = $inbox->keyword;
         $message_num = $inbox->message_num;
-        if($inboxess->where('upd_from_id', $updfromid)->doesntExist()){  
+        if(DB::table($inboxess)->where('upd_from_id', $updfromid)->doesntExist()){  
         
-            $inboxess->insertOrIgnore(['upd_from_id' => $updfromid]);
+            DB::table($inboxess)->insertOrIgnore(['upd_from_id' => $updfromid]);
         }
      
         
@@ -50,13 +50,13 @@ class CallbackMess
 //  Show Youtube video by ID ------------------------------------------------------------------------------------------------------
 
         switch ($upd_data) {
-            case ($youtube->where('videoId', $upd_data)->exists()):
-                $keyword = $inboxess->where('upd_from_id', $updfromid)->first(); 
+            case (DB::table($youtube)->where('videoId', $upd_data)->exists()):
+                $keyword = DB::table($inboxess)->where('upd_from_id', $updfromid)->first(); 
                 $key1 = $keyword->key1;
-                $key2 = $keyword->key2;
+                $cutlastw = preg_replace('=\s\S+$=', "", $key1);
                 $keyboard = Keyboard::make()->inline();
-                if($key2 === 'youtube'){
-                    $yout = $youtube->where('videoId', $upd_data)->select('videoId','publishedAt','title')->latest('publishedAt')->get();
+                if($cutlastw === $youtube){
+                    $yout = DB::table($youtube)->where('videoId', $upd_data)->select('videoId','publishedAt','title')->latest('publishedAt')->get();
                 }else{
                     $keyboard->row(Keyboard::inlineButton([
                             'text'          => iconv('UCS-4LE', 'UTF-8', pack('V', 0x1F519)).' back',
@@ -89,7 +89,7 @@ class CallbackMess
             case ($upd_data === "Menu"):
                 
                 $keyboard = Keyboard::make()->inline();
-                if($updfromid === 1221534640){
+                if($updfromid === $_ENV['YOUR_MESSAGE_ID']){
                     $keyboard->row(Keyboard::inlineButton(['text' => iconv('UCS-4LE', 'UTF-8', pack('V', 0x2757)).' Delete youtube', 'callback_data' => "yout_dell"]));
                 }
                 $keyboard->row(Keyboard::inlineButton(['text' => iconv('UCS-4LE', 'UTF-8', pack('V', 0x2757)).' How to use', 'callback_data' => "info"]));
@@ -103,22 +103,22 @@ class CallbackMess
         case ($upd_data === "yout_dell"||$upd_data === "info"):
             if($upd_data === 'yout_dell'){
                     $ans = 'Youtube table deleted';
-                    $youtube->truncate();
+                    DB::table($youtube)->truncate();
             }else{
                     $ans = "Just type: <b>Youtube madonna</b> or whatever you are looking for..\n\nTo reboot type: /start";
             }
                 $keyboard = Keyboard::make()->inline()->row(Keyboard::inlineButton(['text' => 'Menu', 'callback_data' => 'Menu']));
                 $sendmm = new EditMessa($updfromid,$message_num,$ans,$keyboard);
-                    return $sendmm->editMess();
+                return $sendmm->editMess();
                 break;
 
 //  Get Next 5 Youtube videos from Database  --------------------------------------------------------------------------------------
 
          case (Arr::except($butto, $upd_data) !== false):
-                $sv = $inboxess->where('upd_from_id', $updfromid)->first(); 
+                $sv = DB::table($inboxess)->where('upd_from_id', $updfromid)->first(); 
                 $search_val = $sv->keyword;
                 
-                $inboxess->where('upd_from_id', $updfromid)->update(['key1' => $upd_data]);
+                DB::table($inboxess)->where('upd_from_id', $updfromid)->update(['key1' => $upd_data]);
                 $last_word_start = strrpos($upd_data, " ") + 1;
                 $last_word = substr($upd_data, $last_word_start);
                 $cutlastw = preg_replace('=\s\S+$=', "", $upd_data);
@@ -126,7 +126,7 @@ class CallbackMess
 
                 
                     $search = str_replace("%20", " ", $search_val);
-                    $youtube = DB::table($cutlastw)->where('title','like','%'.$search.'%')->orWhere('channelTitle','like','%'.$search.'%')->skip($obr)->take(5)->latest('publishedAt')->get();
+                    $yout = DB::table($cutlastw)->where('title','like','%'.$search.'%')->orWhere('channelTitle','like','%'.$search.'%')->skip($obr)->take(5)->latest('publishedAt')->get();
                     $ans = 'Found for your request '.$search;
                 
 
@@ -134,7 +134,7 @@ class CallbackMess
                 $ot = new Buttons($buttons);
                 $keyboard = $ot->addButton();
                 
-                    foreach($youtube as $val){
+                    foreach($yout as $val){
                         
                             $title = $val->title;
                             $title = strval($title);
@@ -152,11 +152,11 @@ class CallbackMess
                         return $sendmm->editMess();
                 break;
 
-            case (strpos($upd_data, 'youtube') !== false):
-                $keyword = $inboxess->where('upd_from_id','=', $updfromid)->first(); 
+            case (strpos($upd_data, $youtube) !== false):
+                $keyword = DB::table($inboxess)->where('upd_from_id','=', $updfromid)->first(); 
                 $key1 = $keyword->key1;
                 $key1 = str_replace("%20", " ", $key1);
-                $yout = $youtube->where('title','like','%'.$key1.'%')->orWhere('channelTitle','like','%'.$key1.'%')->skip(0)->take(5)->latest('publishedAt')->get();
+                $yout = DB::table($youtube)->where('title','like','%'.$key1.'%')->orWhere('channelTitle','like','%'.$key1.'%')->skip(0)->take(5)->latest('publishedAt')->get();
                 $buttons = Arr::except($butto, ['youtube 0']);
                 $ot = new Buttons($buttons);
                 $keyboard = $ot->addButton();
@@ -173,11 +173,6 @@ class CallbackMess
                                 
                         break;
 
-//  Вивід характеристик смартфонів ------------------------------------------------------------------------------------------
-
-           
-        }
-        
-
+        }  
     }
 }
