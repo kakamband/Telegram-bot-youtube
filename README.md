@@ -13,9 +13,7 @@ TELEGRAM_BOT_NAME = YOUR-BOT-NAME
 YOUTUBE_API_KEY=YOUR-API-KEY
 YOUR_MESSAGE_ID=YOUR_MESSAGE_ID // not necessary this can be added later
 ```
-Copy Myclass folder in your App folder
-
-Copy database folder and run migrations
-
-Replace your WebhookController on Controller from routs folder
+Copy _Myclass_ folder in your App folder</br>
+Copy _database_ folder and run migrations</br>
+Replace your _WebhookController_ on Controller from routs folder</br>
 
