@@ -1,5 +1,5 @@
 
 <?php
 
-Route::post('/YOUR-WEBHOOK-HERE/webhook', 'WebhookController@start');
+Route::post("/".$_ENV['TELEGRAM_WEBHOOK_URL']."/webhook", "WebhookController@start");
 
