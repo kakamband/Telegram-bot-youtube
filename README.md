@@ -19,6 +19,7 @@ Next step
 
 Copy _Myclass_ folder in your App folder</br>
 Copy _Commands_ folder in your App folder</br>
+Copy _telegram.php_ from config folder in your App/config folder</br>
 Copy _database_ folder and run migrations</br>
 Replace your _WebhookController_ on Controller from routs folder</br>
 
