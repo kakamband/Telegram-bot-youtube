@@ -26,7 +26,7 @@ class CallbackMess
     public function callMess(){
 
         $updates = $this->mess['callback_query'];
-        $inboxess = 'inboxess';
+        $inboxess = 'inboxes';
         $youtube = 'youtubes';
         if(isset($updates['message']['text']))
         {
