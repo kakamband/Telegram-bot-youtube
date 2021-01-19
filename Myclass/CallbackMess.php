@@ -36,7 +36,7 @@ class CallbackMess
         }
         $updfromid = $updates['from']['id'];
         $upd_data = $updates['data'];
-        $butto = ['1' => 'youtube 0','2' => 'youtube 5','3' => 'youtube 10','4' => 'youtube 15','5' => 'youtube 20','6' => 'youtube 25'];
+        $button = ['1' => 'youtube 0','2' => 'youtube 5','3' => 'youtube 10','4' => 'youtube 15','5' => 'youtube 20','6' => 'youtube 25'];
         $inbox = DB::table($inboxess)->where('upd_from_id', $updfromid)->first(); 
         $search = $inbox->keyword;
         $message_num = $inbox->message_num;
@@ -89,7 +89,7 @@ class CallbackMess
             case ($upd_data === "Menu"):
                 
                 $keyboard = Keyboard::make()->inline();
-                if($updfromid === $_ENV['YOUR_MESSAGE_ID']){
+                if($updfromid === $_ENV['YOUR-MESSAGE-ID']){
                     $keyboard->row(Keyboard::inlineButton(['text' => iconv('UCS-4LE', 'UTF-8', pack('V', 0x2757)).' Delete youtube', 'callback_data' => "yout_dell"]));
                 }
                 $keyboard->row(Keyboard::inlineButton(['text' => iconv('UCS-4LE', 'UTF-8', pack('V', 0x2757)).' How to use', 'callback_data' => "info"]));
@@ -130,7 +130,7 @@ class CallbackMess
                     $ans = 'Found for your request '.$search;
                 
 
-                $buttons = Arr::except($butto, [$upd_data]);
+                $buttons = Arr::except($button, [$upd_data]);
                 $ot = new Buttons($buttons);
                 $keyboard = $ot->addButton();
                 
@@ -153,11 +153,11 @@ class CallbackMess
                 break;
 
             case (strpos($upd_data, $youtube) !== false):
-                $keyword = DB::table($inboxess)->where('upd_from_id','=', $updfromid)->first(); 
+                $keyword = DB::table($inboxess)->where('upd_from_id', $updfromid)->first(); 
                 $key1 = $keyword->key1;
                 $key1 = str_replace("%20", " ", $key1);
                 $yout = DB::table($youtube)->where('title','like','%'.$key1.'%')->orWhere('channelTitle','like','%'.$key1.'%')->skip(0)->take(5)->latest('publishedAt')->get();
-                $buttons = Arr::except($butto, ['youtube 0']);
+                $buttons = Arr::except($button, ['youtube 0']);
                 $ot = new Buttons($buttons);
                 $keyboard = $ot->addButton();
                         foreach ($yout as $val) {
