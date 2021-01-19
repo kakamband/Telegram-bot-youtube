@@ -33,8 +33,8 @@ class SimplyMess{
         $word_count = explode(" ", $text_space);
         $repl_1_word = substr(strstr($text_space," "), 1);
         $repl_1_word = preg_replace("/[^а-яА-ЯёЁіІїЇєЄa-zA-Z0-9\s]/iu", '', $repl_1_word);
-        $inboxess = 'inboxess';
-        $youtube = 'youtube';
+        $inboxess = 'inboxes';
+        $youtube = 'youtubes';
         $next_message = $updates['message']['message_id'];
         DB::table($inboxess)->update(['message_num' => $next_message+1]);
         $button = ['1' => 'youtube 0','2' => 'youtube 5','3' => 'youtube 10','4' => 'youtube 15','5' => 'youtube 20','6' => 'youtube 25']; 
