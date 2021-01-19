@@ -4,7 +4,7 @@ This bot search and play youtube videos without ads.
 Working example ![logobott2](https://vap.in.ua/storage/app/public/logobott2.png)   [Lviv_eco_news_bot](https://t.me/VapInUaBot) (Just type: Youtube madonna)
 
 ### How to use
-This bot is built on a https://github.com/irazasyed/telegram-bot-sdk that needs to be installed in your project.
+This bot is built on a https://github.com/irazasyed/telegram-bot-sdk and use Webhook (if you have some troubles with it you can use this tutorial [Set_webhook](https://www.xibel-it.eu/setup-telegram-bot-sdk-with-webhook-in-laravel/))
 
 After telegram-sdk is installed you need to create and add your **bot name** and **bot token** in your **.env** file like so
 ```
